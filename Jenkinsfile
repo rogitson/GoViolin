@@ -6,6 +6,7 @@ pipeline{
         dockerImg = ''
         reg = "rogitson/goviolin"
         regID = 'dockerhub'
+        regURL = 'hub.docker.com'
     }
 
     stages {
@@ -28,7 +29,7 @@ pipeline{
         stage('push to dockerhub') {
         steps{
             script {
-            docker.withRegistry( '', regID ) {
+            docker.withRegistry( regURL, regID ) {
                 dockerImg.push("latest")
             }
             }
