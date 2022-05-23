@@ -3,18 +3,20 @@ pipeline{
     agent any
 
     environment {
-        dockerImg = ''
-        reg = "rogitson/goviolin"
-        regID = 'dockerhub'
-        regURL = 'https://registry.hub.docker.com'
+//         dockerImg = ''
+//         reg = "rogitson/goviolin"
+//         regID = 'dockerhub'
+//         regURL = 'https://registry.hub.docker.com'
+        dockerhub = credentials('dockerhub')
     }
 
     stages {
         stage('build') {
         steps{
-            script {
-            dockerImg = docker.build(reg + ":$BUILD_NUMBER")
-            }
+//             script {
+//             dockerImg = docker.build(reg + ":$BUILD_NUMBER")
+//             }
+            sh 'docker build . -t rogitson/goviolin:$BUILD_NUMBER'
         }
         post {  
             success {  
@@ -28,11 +30,14 @@ pipeline{
 
         stage('push to dockerhub') {
         steps{
-            script {
-            docker.withRegistry( regURL, regID ) {
-                dockerImg.push("latest")
-            }
-            }
+//             script {
+//             docker.withRegistry( regURL, regID ) {
+//                 dockerImg.push("latest")
+//             }
+//             }
+            sh 'docker tag rogitson/goviolin:$BUILD_NUMBER rogitson/goviolin:latest'
+            sh 'echo $dockerhub_PSW | docker login -u $dockerhub_USR --password-stdin'
+            sh 'docker push rogitson/goviolin:latest'
         }
         post {  
             success {  
