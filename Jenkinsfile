@@ -6,7 +6,7 @@ pipeline{
         dockerImg = ''
         reg = "rogitson/goviolin"
         regID = 'dockerhub'
-        regURL = 'https://hub.docker.com'
+        regURL = 'https://registry.hub.docker.com'
     }
 
     stages {
