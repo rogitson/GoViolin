@@ -12,7 +12,7 @@ pipeline{
         stage('build') {
         steps{
             script {
-            dockerImage = docker.build(reg + ":$BUILD_NUMBER")
+            dockerImg = docker.build(reg + ":$BUILD_NUMBER")
             }
         }
         post {  
@@ -29,7 +29,7 @@ pipeline{
         steps{
             script {
             docker.withRegistry( '', regID ) {
-                dockerImage.push("latest")
+                dockerImg.push("latest")
             }
             }
         }
